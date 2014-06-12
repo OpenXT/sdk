@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:vssd="http://schemas.dmtf.org/wbem/wscim/1/cim-schema/2/CIM_VirtualSystemSettingData"
+    xmlns:rasd="http://schemas.dmtf.org/wbem/wscim/1/cim-schema/2/CIM_ResourceAllocationSettingData"
+    xmlns:sasd="http://schemas.dmtf.org/wbem/wscim/1/cim-schema/2/CIM_StorageAllocationSettingData"
+    xmlns:epasd="http://schemas.dmtf.org/wbem/wscim/1/cim-schema/2/CIM_EthernetPortAllocationSettingData"
+    xmlns:ovf="http://schemas.dmtf.org/ovf/envelope/1"
+    xmlns:xci="http://www.citrix.com/xenclient/ovf/1"
+    xmlns="http://schemas.dmtf.org/ovf/envelope/1">
+
+    <!-- References to all external files -->
+    <References>
+        <File ovf:id="squeeze-disk-file" ovf:href="squeeze.vhd"/>
+    </References>
+    <!-- Describes meta-information about all virtual disks in the package  -->
+    <DiskSection>
+        <Info>List of the virtual disks used in the package</Info>
+        <Disk ovf:diskId="squeeze-disk" ovf:fileRef="squeeze-disk-file" ovf:capacity="0" ovf:format="vhd"/>
+    </DiskSection>
+
+    <xci:ApplianceSection xci:applianceId="squeeze" xci:version="1">
+        <ovf:Info>XenClient appliance section</ovf:Info>
+	<xci:VirtualMachine xci:ovfId="squeeze">
+	  <xci:PropertyOverride>
+	    <xci:Property xci:name="hvm" xci:value="true"/>
+	    <xci:Property xci:name="viridian" xci:value="false"/>
+	    <xci:Property xci:name="flask-label" xci:value="system_u:system_r:hvm_guest_t"/>
+	  </xci:PropertyOverride>
+	</xci:VirtualMachine>
+    </xci:ApplianceSection>
+
+    <VirtualSystem ovf:id="squeeze" ovf:transport="iso">
+        <Info>User interface virtual machine</Info>
+        <Name>squeeze-vm</Name>
+
+        <!-- Overall information about the product -->
+        <ProductSection>
+            <Info>Product information for the service</Info>
+            <Product>User interface virtual machine</Product>
+            <Version>1.0</Version>
+            <FullVersion>1.0.0</FullVersion>
+        </ProductSection>
+
+        <VirtualHardwareSection>
+            <Info>Virtual Hardware Requirements: 512MB, 1 CPU, 1 disk, 1 NIC</Info>
+            <Item>
+                <rasd:Description>Number of virtual CPUs</rasd:Description>
+                <rasd:ElementName>1 virtual CPU</rasd:ElementName>
+                <rasd:InstanceID>1</rasd:InstanceID>
+                <rasd:ResourceType>3</rasd:ResourceType>
+                <rasd:VirtualQuantity>1</rasd:VirtualQuantity>
+            </Item>
+            <Item>
+                <rasd:AllocationUnits>byte * 2^20</rasd:AllocationUnits>
+                <rasd:Description>Memory Size</rasd:Description>
+                <rasd:ElementName>512 MB of memory</rasd:ElementName>
+                <rasd:InstanceID>2</rasd:InstanceID>
+                <rasd:ResourceType>4</rasd:ResourceType>
+                <rasd:VirtualQuantity>512</rasd:VirtualQuantity>
+            </Item>
+
+            <StorageItem>
+                <sasd:ElementName>Hard disk 1</sasd:ElementName>
+                <sasd:HostResource>ovf:/disk/squeeze-disk</sasd:HostResource>
+                <sasd:InstanceID>3</sasd:InstanceID>
+                <sasd:Parent>4</sasd:Parent>
+                <sasd:ResourceType>17</sasd:ResourceType>
+            </StorageItem>
+        </VirtualHardwareSection>
+    </VirtualSystem>
+</Envelope>

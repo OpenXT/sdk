@@ -1,0 +1,4 @@
+squeeze-hvm.ovf contains a minimal OVF descriptor for a HVM debian squeeze system (512MB memory, 1 vcpu).
+
+It refers to "squeeze.vhd" file, which is not provided, but needs to be placed in same directory as squeeze-hvm.ovf during import. It needs to be a partitioned vhd, created for example by manually installing debian squeeze on that VHD beforehand.
+
